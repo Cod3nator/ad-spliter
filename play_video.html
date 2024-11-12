@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Chunk Player</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        video {
+            width: 80%;
+            max-width: 600px;
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <video width="500" height="340" id="videoPlayer">
+        <source id="videoSource" src="" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <button id="playButton">Play Chunks</button>
+
+    <script>
+        const videoPlayer = document.getElementById('videoPlayer');
+        const videoSource = document.getElementById('videoSource');
+        const playButton = document.getElementById('playButton');
+
+        // Array of video chunks
+        const videoChunks = [];
+        const chunkCount = 300; // Update this based on the number of chunks you have
+        for (let i = 0; i <= chunkCount; i++) {
+            videoChunks.push(`chunk_${i}.mp4`);
+        }
+
+        let currentChunkIndex = 1;
+
+        // Function to play the next chunk
+        function playNextChunk() {
+            if (currentChunkIndex < videoChunks.length) {
+                videoSource.src = videoChunks[currentChunkIndex];
+                videoPlayer.load(); // Load the new video source
+                videoPlayer.play(); // Play the video
+
+                // Update the index for the next chunk
+                currentChunkIndex++;
+
+                // Play the next chunk when the current one ends
+                videoPlayer.onended = playNextChunk;
+            } else {
+                console.log("All chunks have been played.");
+            }
+        }
+
+        // Start playing chunks when the button is clicked
+        playButton.onclick = function() {
+            currentChunkIndex = 1; // Reset the index
+            playNextChunk();
+        };
+    </script>
+
+</body>
+</html>

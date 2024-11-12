@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <video width="500" height="340" id="videoPlayer" >
+      Your browser does not support the video tag.
+    </video>
+    <button id="playButton">Play Chunks</button>
+
+    <script>
+      const video = document.getElementById("videoPlayer");
+      const playButton = document.getElementById("playButton");
+      
+      const videoChunks = [];
+      const chunkCount = 196; // Update this based on the number of chunks you have
+      for (let i = 0; i <= chunkCount; i++) {
+          videoChunks.push(`chunk_${i}.mp4`);
+      }
+
+      let currentChunkIndex = 0;
+
+      // Function to play the next chunk
+      function playNextChunk() {
+          if (currentChunkIndex < videoChunks.length) {
+              video.src = videoChunks[currentChunkIndex];
+              video.play();
+
+              // Preload the next chunk using a video element
+              const nextChunkIndex = currentChunkIndex + 1;
+              if (nextChunkIndex < videoChunks.length) {
+                  const preloadedVideo = document.createElement('video');
+                  preloadedVideo.src = videoChunks[nextChunkIndex];
+              }
+
+              currentChunkIndex++;
+          } else {
+              console.log("All chunks have been played.");
+          }
+      }
+
+      // Start playing chunks on button click
+      playButton.addEventListener('click', playNextChunk);
+
+      // Play the next chunk when the current one ends
+      video.addEventListener('ended', playNextChunk);
+    </script>
+  </body>
+</html>
